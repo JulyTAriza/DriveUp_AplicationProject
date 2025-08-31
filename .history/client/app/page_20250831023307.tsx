@@ -6,7 +6,7 @@ import Searchbar from "@components/Searchbar";
 import CustomFilter from "@components/CustomFilter";
 import { fuels, yearsOfProduction } from "@constants";
 import BackgroundCarousel from "@components/BackgroundCarousel";
-import CategoriesFilter from "@/components/CatalogPage";
+import CategoriesFilter from "@/components/CategoriesFilter";
 
 interface SearchParams {
   q?: string;

@@ -144,7 +144,7 @@ const handleDelete = async (id: number) => {
                     </td>
                     <td className="py-3 px-4 flex justify-center gap-3">
                       <button
-                        className="icon-action"
+                        className="text-blue-500 hover:text-blue-700"
                         onClick={() => handleEdit(car)}
                       >
                         <Pencil className="w-5 h-5" />

@@ -80,7 +80,7 @@ export default function CarDetailsPage({ params }: CarDetailsPageProps) {
           </div>
 
           <Link href="/login" passHref>
-            <button className="btn-base">
+            <button className="w-full py-3 mt-8 bg-blue-600 text-white font-bold rounded-lg shadow-lg hover:bg-blue-700 transition-colors">
               Reservar este Auto
             </button>
           </Link>

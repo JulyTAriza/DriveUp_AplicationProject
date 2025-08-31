@@ -32,9 +32,9 @@ export default function Sidebar() {
   ];
 
   return (
-<aside className="w-64 bg-[#06402B] text-white flex flex-col">
+<aside className="w-64 bg-primary text-white flex flex-col">
   <div className="p-6">
-    <h1 className="text-2xl font-bold">Bienvenido Admin</h1>
+    <h1 className="text-2xl font-bold">Panel Admin</h1>
   </div>
   <nav className="flex-1 px-4">
     <ul>
@@ -44,8 +44,8 @@ export default function Sidebar() {
             href={href}
             className={`w-full flex items-center p-3 rounded-lg transition-colors ${
               pathname === href
-                ? "bg-[#06402B] font-semibold text-white"
-                : "hover:bg-[#075c3a]"
+                ? "bg-primary/80 font-semibold text-white" // sombreado si está activo
+                : "hover:bg-primary/70"
             }`}
           >
             <Icon className="mr-3" size={20} />
@@ -55,16 +55,15 @@ export default function Sidebar() {
       ))}
     </ul>
   </nav>
-  <div className="p-4 border-t border-[#06402B]">
+  <div className="p-4 border-t border-primary/50">
     <button
       onClick={handleLogout}
-      className="w-full flex items-center p-3 rounded-lg text-white hover:bg-[#075c3a] transition-colors"
+      className="w-full flex items-center p-3 rounded-lg text-red-400 hover:bg-primary/70 transition-colors"
     >
       <LogOut className="mr-3" size={20} />
       Cerrar Sesión
     </button>
   </div>
 </aside>
-
   );
 }

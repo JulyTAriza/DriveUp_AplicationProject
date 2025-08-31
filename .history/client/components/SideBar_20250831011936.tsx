@@ -2,11 +2,19 @@
 
 import { useAuth } from "@/components/AuthContext";
 import { useRouter, usePathname } from "next/navigation";
-import { Car, Heart, User, HelpCircle, LogOut, Home, History } from "lucide-react";
+import {
+  CalendarCheck,
+  Car,
+  LogOut,
+  Users,
+  Tag,
+  Star,
+  BarChart2,
+} from "lucide-react";
 import Link from "next/link";
 
-export default function UserSidebar() {
-  const { user, logout } = useAuth(); // ✅ ahora obtenemos también el usuario
+export default function Sidebar() {
+  const { logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -16,25 +24,18 @@ export default function UserSidebar() {
   };
 
   const links = [
-    { href: "/catalog", label: "Explorar Autos", icon: Home },
-    { href: "/catalog/reservation", label: "Mis Reservas", icon: Car },
-    { href: "/catalog/record", label: "Mi Historial", icon: History },
-    { href: "/catalog/favorites", label: "Favoritos", icon: Heart },
-    { href: "/catalog/profile", label: "Mi Perfil", icon: User },
-    { href: "/catalog/support", label: "Soporte", icon: HelpCircle },
+    { href: "/products", label: "Gestión de Autos", icon: Car },
+    { href: "/products/reservation", label: "Gestión de Reservas", icon: CalendarCheck },
+    { href: "/products/users", label: "Gestión de Usuarios", icon: Users },
+    { href: "/products/categories", label: "Gestión de Categorías", icon: Tag },
+    { href: "/products/features", label: "Gestión de Características", icon: Star }
   ];
 
   return (
 <aside className="w-64 bg-[#06402B] text-white flex flex-col">
-  {/* Header con info del usuario */}
-  <div className="p-6 border-b border-[#06402B]">
-    <h1 className="text-2xl font-bold">Mi Cuenta</h1>
-    {user && (
-      <p className="text-sm text-white/70 mt-1">{user.email}</p>
-    )}
+  <div className="p-6">
+    <h1 className="text-2xl font-bold">Panel Admin</h1>
   </div>
-
-  {/* Navegación */}
   <nav className="flex-1 px-4">
     <ul>
       {links.map(({ href, label, icon: Icon }) => (
@@ -44,7 +45,7 @@ export default function UserSidebar() {
             className={`w-full flex items-center p-3 rounded-lg transition-colors ${
               pathname === href
                 ? "bg-[#06402B] font-semibold text-white"
-                : "hover:bg-[#075c3a]"
+                : "hover:bg-[#06402B]"
             }`}
           >
             <Icon className="mr-3" size={20} />
@@ -54,12 +55,10 @@ export default function UserSidebar() {
       ))}
     </ul>
   </nav>
-
-  {/* Botón logout */}
   <div className="p-4 border-t border-[#06402B]">
     <button
       onClick={handleLogout}
-      className="w-full flex items-center p-3 rounded-lg text-white hover:bg-[#075c3a] transition-colors"
+      className="w-full flex items-center p-3 rounded-lg text-white hover:bg-[#06402B] transition-colors"
     >
       <LogOut className="mr-3" size={20} />
       Cerrar Sesión
