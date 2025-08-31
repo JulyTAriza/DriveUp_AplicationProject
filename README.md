@@ -78,7 +78,7 @@ Sigue estos pasos para ejecutar el proyecto en tu máquina.
 | :--- | :--- | :--- | :--- |
 | `POST` | `/api/auth/login` | Login de usuario | No |
 | `POST` | `/api/auth/register` | Registro de usuario | No |
-| `GET` | `/api/cars` | Obtener todos los autos | No |
+| `GET` | `/api/cars` | Obtener todos los autos | Si |
 | `POST` | `/api/cars` | Crear nuevo auto | Sí |
 | `PUT` | `/api/cars/{id}` | Actualizar auto | Sí |
 | `DELETE`| `/api/cars/{id}` | Eliminar auto | Sí |
