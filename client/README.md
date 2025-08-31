@@ -1,0 +1,88 @@
+# DriveUp 🚗
+
+DriveUp es una aplicación web full-stack para la gestión y alquiler de autos. Permite a los usuarios explorar un catálogo de vehículos, ver sus características y reservar fechas, mientras que un panel de administración completo facilita la gestión de autos, categorías y usuarios.
+
+---
+
+### 1. Tecnologías
+
+El proyecto se divide en un frontend y un backend.
+
+#### 🖥️ Frontend
+* **Next.js 13.4.3**
+* **React 18.2.0**
+* **TypeScript 5.0.4**
+* **Tailwind CSS 3.3.2**
+* **Axios 1.11.0**
+* **Lucide-React 0.540.0**
+
+#### ⚙️ Backend
+* **Spring Boot 3.3.4**
+* **Java 17**
+* **Spring Data JPA**
+* **Spring Security**
+* **PostgreSQL**
+* **JJWT 0.11.5**
+
+---
+
+### 2. Instalación Local
+
+Sigue estos pasos para ejecutar el proyecto en tu máquina.
+
+#### Requisitos previos
+* **Node.js** (v20+)
+* **npm**
+* **Java 17**
+* **Maven**
+* **PostgreSQL**
+
+#### Backend (Carpeta `server`)
+
+1.  **Clona el repositorio**
+    ```bash
+    git clone [URL_DE_TU_REPOSITORIO]
+    cd server
+    ```
+2.  **Configura la base de datos**
+    * Crea una base de datos de PostgreSQL llamada `driveup_db`.
+    * Configura las credenciales de tu base de datos en `src/main/resources/application.properties` o en tu archivo `.env`.
+
+3.  **Inicia el servidor**
+    ```bash
+    ./mvnw spring-boot:run
+    ```
+
+#### Frontend (Carpeta `client`)
+
+1.  **Instala las dependencias**
+    ```bash
+    cd client
+    npm install
+    ```
+2.  **Configura la URL de la API**
+    * Crea un archivo `.env.local` y añade:
+        ```ini
+        NEXT_PUBLIC_API_URL=http://localhost:8080
+        ```
+3.  **Inicia la aplicación**
+    ```bash
+    npm run dev
+    ```
+
+---
+
+### 3. Endpoints de la API
+
+| Método | Endpoint | Descripción | Autenticación |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/auth/login` | Login de usuario | No |
+| `POST` | `/api/auth/register` | Registro de usuario | No |
+| `GET` | `/api/cars` | Obtener todos los autos | No |
+| `POST` | `/api/cars` | Crear nuevo auto | Sí |
+| `PUT` | `/api/cars/{id}` | Actualizar auto | Sí |
+| `DELETE`| `/api/cars/{id}` | Eliminar auto | Sí |
+
+----------
+
+![alt text](image.png)

@@ -1,0 +1,38 @@
+{
+  "name": "carhub",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@headlessui/react": "^1.7.14",
+    "@react-three/drei": "9.79",
+    "@react-three/fiber": "8.15",
+    "@types/node": "20.2.1",
+    "@types/react": "18.2.6",
+    "@types/react-dom": "18.2.4",
+    "autoprefixer": "10.4.14",
+    "axios": "^1.11.0",
+    "dayjs": "^1.11.18",
+    "gsap": "^3.13.0",
+    "lucide-react": "^0.540.0",
+    "motion": "^12.23.12",
+    "next": "13.4.3",
+    "postcss": "8.4.23",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-slick": "^0.31.0",
+    "recharts": "^3.1.2",
+    "slick-carousel": "^1.8.1",
+    "tailwindcss": "3.3.2",
+    "three": "^0.158.0",
+    "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@types/react-slick": "^0.23.13"
+  }
+}
