@@ -1,0 +1,318 @@
+import axios from "axios";
+
+// -------------------------------
+// Configuración base de tu API
+// -------------------------------
+const api = axios.create({
+  baseURL: "http://localhost:8080", // URL del backend Spring Boot
+});
+// -------------------------------
+// Interceptor para adjuntar token automáticamente
+// -------------------------------
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token && token !== "null" && token !== "undefined") {
+    config.headers.Authorization = `Bearer ${token}`;
+  } else {
+    delete config.headers.Authorization;
+  }
+  return config;
+});
+
+// -------------------------------
+// Tipos
+// -------------------------------
+export interface DateRange {
+  rentalStart: string;
+  rentalEnd: string;
+}
+export interface Car {
+  id: number;
+  name: string;
+  description: string;
+  carBrand: string;
+  pricePerHour: number;
+  images: string[];
+  characteristics: string[];
+  category: {
+    id: number;
+    name: string;
+  };
+  reservedDates?: DateRange[];
+}
+
+export interface NewCar {
+  name: string;
+  description: string;
+  carBrand: string;
+  pricePerHour: number;
+  category_id: number;
+  images?: File[];
+  characteristics: string[];
+  reservedDates?: DateRange[];
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  token: string;
+  id: number;
+  email: string;
+  rol: "ADMIN" | "USER";
+}
+
+export interface RegisterRequest {
+  nombre: string;
+  apellido: string;
+  email: string;
+  password: string;
+}
+
+export interface RegisterResponse {
+  token: string;
+  id: number;
+  email: string;
+  rol: "ADMIN" | "USER";
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  cars_id: number[]; // relación con autos
+}
+
+export interface User {
+  id?: number; // El ID es opcional al crear un nuevo usuario
+  nombre: string;
+  apellido: string;
+  email: string;
+  role: "ADMIN" | "USER";
+  password?: string;
+}
+
+export interface Reservation {
+  id: number;
+  car_id: number;
+  user_id: number;
+  pickUp: string;
+  rentalStart: string;
+  rentalEnd: string;
+  status: "PENDIENTE" | "CONFIRMADA" | "CANCELADA";
+  stars?: number;      // ⭐ solo al consultar o actualizar
+  favorite?: boolean;  // ❤️ solo al consultar o actualizar
+}
+
+export interface NewReservation {
+  car_id: number;
+  user_id: number;
+  pickUp: string;
+  rentalStart: string;
+  rentalEnd: string;
+  status: string;
+  stars?: number;      // ⭐ opcional al crear
+  favorite?: boolean; 
+}
+
+// -------------------------------
+// Endpoints de autos
+// -------------------------------
+export const carApi = {
+  getAll: async (): Promise<Car[]> => {
+    const res = await api.get("/autos");
+    return res.data;
+  },
+
+  getById: async (id: number): Promise<Car> => {
+    const res = await api.get(`/autos/${id}`);
+    return res.data;
+  },
+
+  create: async (formData: FormData): Promise<Car> => {
+    const res = await api.post("/autos", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return res.data;
+  },
+
+ update: async (formData: FormData, id: number): Promise<Car> => {
+    const res = await api.put(`/autos/${id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return res.data;
+  },
+
+
+  delete: async (id: number): Promise<void> => {
+    await api.delete(`/autos/${id}`);
+  },
+
+  findByBrand: async (carBrand: string): Promise<Car[]> => {
+    const res = await api.get(`/autos/marca/${carBrand}`);
+    return res.data;
+  },
+
+  findByName: async (name: string): Promise<Car[]> => {
+    const res = await api.get(`/autos/nombre?name=${name}`);
+    return res.data;
+  },
+  updateCharacteristics: async (car: Car): Promise<Car> => {
+        const res = await api.put(`/autos/${car.id}/caracteristicas`, car);
+        return res.data;
+  },
+};
+
+// -------------------------------
+// Endpoints de auth
+// -------------------------------
+export const authApi = {
+  login: async (data: LoginRequest): Promise<LoginResponse> => {
+    const res = await api.post("/auth/login", data);
+    return res.data;
+  },
+
+  register: async (data: RegisterRequest): Promise<RegisterResponse> => {
+    const res = await api.post("/auth/register", data);
+    return res.data;
+  },
+};
+
+// -------------------------------
+// Endpoints de categorías
+// -------------------------------
+export const categoryApi = {
+  getAll: async (): Promise<Category[]> => {
+    const res = await api.get("/categorias");
+    return res.data;
+  },
+
+  getById: async (id: number): Promise<Category> => {
+    const res = await api.get(`/categorias/${id}`);
+    return res.data;
+  },
+
+  getByName: async (name: string): Promise<Category> => {
+    const res = await api.get(`/categorias/nombre/${name}`);
+    return res.data;
+  },
+
+  create: async (category: Omit<Category, "id">): Promise<Category> => {
+    const res = await api.post("/categorias", category);
+    return res.data;
+  },
+
+  update: async (category: Category): Promise<Category> => {
+    const res = await api.put("/categorias", category);
+    return res.data;
+  },
+
+  delete: async (id: number): Promise<void> => {
+    await api.delete(`/categorias/${id}`);
+  },
+};
+
+
+// -------------------------------
+// Endpoints de Reservas
+// -------------------------------
+export const reservationApi = {
+  getAll: async (): Promise<Reservation[]> => {
+    const res = await api.get("/reservas");
+    return res.data;
+  },
+
+  getById: async (id: number): Promise<Reservation> => {
+    const res = await api.get(`/reservas/${id}`);
+    return res.data;
+  },
+    // ✅ NUEVO: obtener las reservas de un usuario
+  getByUserId: async (userId: number): Promise<Reservation[]> => {
+    const res = await api.get(`/reservas/user/${userId}`);
+    return res.data;
+  },
+  
+  create: async (reservation: NewReservation): Promise<Reservation> => {
+    // Siempre enviamos stars = 0 y favorite = false
+    const payload = {
+      ...reservation,
+      stars: 0,
+      favorite: false,
+    };
+
+    const res = await api.post("/reservas", payload);
+    return res.data;
+  },
+
+  update: async (reservation: Reservation): Promise<Reservation> => {
+    const res = await api.put("/reservas", reservation);
+    return res.data;
+  },
+
+  delete: async (id: number): Promise<void> => {
+    await api.delete(`/reservas/${id}`);
+  },
+
+updateStatus: async (
+  reservation: Reservation,
+  newStatus: "PENDIENTE" | "CONFIRMADA" | "CANCELADA"
+) => {
+  const payload = {
+    id: reservation.id,
+    car_id: reservation.car_id,   // usar directamente car_id
+    user_id: reservation.user_id, // usar directamente user_id
+    pickUp: reservation.pickUp,
+    rentalStart: reservation.rentalStart,
+    rentalEnd: reservation.rentalEnd,
+    status: newStatus,
+  };
+
+  const res = await api.put("/reservas", payload);
+  return res.data;
+},
+// ⭐ Nueva función para actualizar la puntuación (stars)
+updateStars: async (reservation: Reservation, stars: number): Promise<Reservation> => {
+  const payload = { ...reservation, stars };
+  const res = await api.put("/reservas", payload);
+  return res.data;
+},
+
+updateFavorite: async (reservation: Reservation, favorite: boolean): Promise<Reservation> => {
+  const payload = { ...reservation, favorite };
+  const res = await api.put("/reservas", payload);
+  return res.data;
+},
+
+};
+// -------------------------------
+// Endpoints de usuario-Admin
+// -------------------------------
+export const userApi = {
+  getAll: async (): Promise<User[]> => {
+    const res = await api.get("/usuarios");
+    return res.data;
+  },
+
+  getById: async (id: number): Promise<User> => {
+    const res = await api.get(`/usuarios/${id}`);
+    return res.data;
+  },
+
+  create: async (user: Omit<User, "id">): Promise<User> => {
+    const res = await api.post("/usuarios", user);
+    return res.data;
+  },
+
+  update: async (user: User): Promise<User> => {
+    const res = await api.put("/usuarios", user);
+    return res.data;
+  },
+
+  delete: async (id: number): Promise<void> => {
+    await api.delete(`/usuarios/${id}`);
+  },
+
+};
+
+export default api;
